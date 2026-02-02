@@ -13,7 +13,16 @@ export class OrdinatorsService {
   ) {}
 
   findAll() {
-    return this.ordinatorRepo.find();
+  return this.ordinatorRepo.find({
+    relations: {
+      educationInfo: true,
+      universities: true,
+      sessions: true,
+      money: true,
+      vacations: true,
+      currentControls: true,
+    },
+  });
   }
   
   create(dto: CreateOrdinatorDto) {
@@ -21,18 +30,17 @@ export class OrdinatorsService {
     return this.ordinatorRepo.save(ordinator);
  }
 
-  findOne(id: string) {
+  findOne(id: number) {
     return this.ordinatorRepo.findOneBy({ id });
   }
 
-  async remove(id: string) {
+  async remove(id: number) {
     await this.ordinatorRepo.delete({ id });
     return { deleted: true };
   }
 
-  async update(id: string, dto: UpdateOrdinatorDto) {
+  async update(id: number, dto: UpdateOrdinatorDto) {
     await this.ordinatorRepo.update({ id }, dto);
     return this.findOne(id);
   }  
-  
 }

@@ -12,7 +12,7 @@ export class OrdinatorsController {
   ) {}
 
   @Get()
-  getAll() {
+  findAll() {
     return this.ordinatorsService.findAll();
   }
 
@@ -22,18 +22,17 @@ export class OrdinatorsController {
   }
 
   @Get(':id')
-  getOne(@Param('id') id: string) {
+  getOne(@Param('id') id: number) {
     return this.ordinatorsService.findOne(id);
  } 
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id') id: number) {
     return this.ordinatorsService.remove(id);
  }
 
  @Patch(':id')
- update(@Param('id') id: string, @Body() dto: UpdateOrdinatorDto,) {
+ update(@Param('id') id: number, @Body() dto: UpdateOrdinatorDto,) {
     return this.ordinatorsService.update(id, dto);
  }
-
 }

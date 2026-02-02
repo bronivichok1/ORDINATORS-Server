@@ -1,9 +1,19 @@
-import { Entity, Column, PrimaryColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany} from 'typeorm';
+
+import { EducationInfo } from '../../education-info/entities/education-info.entity';
+import { Money } from '../../money/entities/money.entity';
+import { Session } from '../../session/entities/session.entity';
+import { University } from '../../university/entities/university.entity';
+import { Vacation } from '../../vacation/entities/vacation.entity';
+import { CurrentControl } from '../../current-control/entities/current-control.entity';
 
 @Entity('ordinators')
 export class Ordinator {
-  @PrimaryColumn({ type: 'varchar', length: 36 })
-  id: string;
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column({ type: 'text', unique: true })
+  pasnumber: string;
 
   @Column({ type: 'varchar', length: 100 })
   lastname_ru: string;
@@ -48,7 +58,7 @@ export class Ordinator {
   medicalcertificate: 'Y' | 'N';
 
   @Column({ type: 'char', length: 1 })
-  RIVShcertificate: 'Y' | 'N';
+  rivshcertificate: 'Y' | 'N';
 
   @Column({ type: 'varchar', length: 50 })
   doc_type: string;
@@ -70,4 +80,34 @@ export class Ordinator {
 
   @Column({ type: 'date' })
   registration_deadline: string;
+  
+  @OneToMany(() => EducationInfo, e => e.ordinator, {
+    cascade : true,
+  })
+  educationInfo: EducationInfo[];
+
+  @OneToMany(() => Money, m => m.ordinator, {
+    cascade : true,
+  })
+  money: Money[];
+
+  @OneToMany(() => Session, s => s.ordinator, {
+    cascade : true,
+  })
+  sessions: Session[];
+
+  @OneToMany(() => University, u => u.ordinator, {
+    cascade : true,
+  })
+  universities: University[];
+
+  @OneToMany(() => Vacation, v => v.ordinator, {
+    cascade : true,
+  })
+  vacations: Vacation[];
+
+  @OneToMany(() => CurrentControl, c => c.ordinator, {
+    cascade : true,
+  })
+  currentControls: CurrentControl[];
 }

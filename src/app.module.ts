@@ -4,6 +4,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module'; // ДОЛЖЕН БЫТЬ ИМПОРТ
 import { OrdinatorsModule } from './ordinators/ordinators.module';
+import { EducationInfoModule } from './education-info/education-info.module';
+import { UniversityModule } from './university/university.module';
+import { MoneyModule } from './money/money.module';
+import { SessionModule } from './session/session.module';
+import { VacationModule } from './vacation/vacation.module';
 
 @Module({
   imports: [
@@ -23,6 +28,11 @@ import { OrdinatorsModule } from './ordinators/ordinators.module';
     AuthModule,
     UsersModule, // ВАЖНО: этот модуль должен быть здесь
     OrdinatorsModule,
+    EducationInfoModule,
+    UniversityModule,
+    MoneyModule,
+    SessionModule,
+    VacationModule,
   ],
 })
 export class AppModule {}
