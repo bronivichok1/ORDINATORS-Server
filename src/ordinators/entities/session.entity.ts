@@ -12,7 +12,6 @@ export class Session {
   @Column({ name: 'session_end', type: 'date', nullable: true })
   sessionEnd: Date;
 
-  // Обратная связь One-to-One
   @OneToOne(() => Ordinator, ordinator => ordinator.session)
   ordinator: Ordinator;
 }

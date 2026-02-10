@@ -9,7 +9,7 @@ import { Money } from './entities/money.entity';
 import { Session } from './entities/session.entity';
 import { Vacation } from './entities/vacation.entity';
 import { EducationInfo } from './entities/education_info.entity';
-import { Worker } from './entities/workers.entity';
+import { Worker } from '../users/entities/worker.entity';
 
 @Module({
   imports: [

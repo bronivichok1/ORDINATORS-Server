@@ -5,7 +5,7 @@ export class Worker {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ name: 'FIO' })
+  @Column()
   fio: string;
 
   @Column({ unique: true })

@@ -9,7 +9,6 @@ export class EducationInfo {
   @Column({ nullable: true })
   additional_info: string;
 
-  // Обратная связь One-to-One
   @OneToOne(() => Ordinator, ordinator => ordinator.educationInfo)
   ordinator: Ordinator;
 }

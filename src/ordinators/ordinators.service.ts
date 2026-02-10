@@ -31,7 +31,7 @@ export class OrdinatorsService {
   ) {}
 
   async create(createOrdinatorDto: CreateOrdinatorDto) {
-    // Создаем связанные записи ПЕРВЫМИ
+
     let university: University | null = null;
     let currentControl: CurrentControl | null = null;
     let money: Money | null = null;
@@ -39,7 +39,6 @@ export class OrdinatorsService {
     let vacation: Vacation | null = null;
     let educationInfo: EducationInfo | null = null;
 
-    // 1. Создаем University (если есть данные)
     if (createOrdinatorDto.universityName) {
       university = this.universityRepository.create({
         name: createOrdinatorDto.universityName,
@@ -52,7 +51,6 @@ export class OrdinatorsService {
       university = await this.universityRepository.save(university);
     }
 
-    // 2. Создаем CurrentControl (если есть данные)
     if (createOrdinatorDto.scores) {
       currentControl = this.currentControlRepository.create({
         scores: createOrdinatorDto.scores,
@@ -60,7 +58,6 @@ export class OrdinatorsService {
       currentControl = await this.currentControlRepository.save(currentControl);
     }
 
-    // 3. Создаем Money (если есть данные)
     if (createOrdinatorDto.allowanceStartDate) {
       money = this.moneyRepository.create({
         allowanceStartDate: createOrdinatorDto.allowanceStartDate,
@@ -69,7 +66,6 @@ export class OrdinatorsService {
       money = await this.moneyRepository.save(money);
     }
 
-    // 4. Создаем Session (если есть данные)
     if (createOrdinatorDto.sessionStart) {
       session = this.sessionRepository.create({
         sessionStart: createOrdinatorDto.sessionStart,
@@ -78,20 +74,17 @@ export class OrdinatorsService {
       session = await this.sessionRepository.save(session);
     }
 
-    // 5. Создаем Vacation (если есть данные)
     if (createOrdinatorDto.socialLeave) {
       vacation = this.vacationRepository.create({
         vacationStart: new Date(),
-        vacationEnd: new Date(), // Можно настроить логику дат
+        vacationEnd: new Date(), 
       });
       vacation = await this.vacationRepository.save(vacation);
     }
 
-    // 6. Создаем EducationInfo (если нужно)
     educationInfo = this.educationInfoRepository.create({});
     educationInfo = await this.educationInfoRepository.save(educationInfo);
 
-    // 7. Теперь создаем Ordinator и связываем с созданными записями
     const ordinatorData: Partial<Ordinator> = {
       fio: createOrdinatorDto.fio,
       fioEn: createOrdinatorDto.fioEn,
@@ -114,7 +107,6 @@ export class OrdinatorsService {
       medicalCertificate: createOrdinatorDto.medicalCertificate,
       login: createOrdinatorDto.login,
       password: createOrdinatorDto.password,
-      supervisorId: createOrdinatorDto.supervisorId,
       rivshCertificate: createOrdinatorDto.rivshCertificate,
       entryByInvitation: createOrdinatorDto.entryByInvitation,
       distributionInfo: createOrdinatorDto.distributionInfo,
@@ -173,10 +165,8 @@ export class OrdinatorsService {
   async update(id: number, updateOrdinatorDto: UpdateOrdinatorDto) {
     const ordinator = await this.findOne(id);
 
-    // Обновляем основные поля ординатора
     Object.assign(ordinator, updateOrdinatorDto);
 
-    // Обновляем связанные записи если нужно
     if (ordinator.university && (updateOrdinatorDto.universityName || updateOrdinatorDto.graduationYear)) {
       Object.assign(ordinator.university, {
         name: updateOrdinatorDto.universityName || ordinator.university.name,
@@ -216,7 +206,6 @@ export class OrdinatorsService {
   async remove(id: number) {
     const ordinator = await this.findOne(id);
 
-    // Каскадное удаление - связанные записи удалятся автоматически из-за cascade: true
     await this.ordinatorsRepository.remove(ordinator);
 
     return { message: `Ordinator with ID ${id} deleted successfully` };

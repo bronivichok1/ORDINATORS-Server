@@ -74,9 +74,6 @@ export class Ordinator {
   @Column()
   password: string;
 
-  @Column({ name: 'supervisor_id', nullable: true })
-  supervisorId: number;
-
   @Column({ name: 'rivsh_certificate' })
   rivshCertificate: string;
 
@@ -86,7 +83,6 @@ export class Ordinator {
   @Column({ name: 'distribution_info', nullable: true })
   distributionInfo: string;
 
-  // One-to-One связи
   @OneToOne(() => University, university => university.ordinator, {
     cascade: true,
     eager: true

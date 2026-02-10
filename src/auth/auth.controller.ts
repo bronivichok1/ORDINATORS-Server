@@ -29,4 +29,5 @@ export class AuthController {
   async validate(@Request() req) {
     return this.authService.validateToken(req.user.userId);
   }
+  
 }

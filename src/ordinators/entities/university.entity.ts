@@ -24,7 +24,6 @@ export class University {
   @Column({ name: 'preparation_form' })
   preparationForm: string;
 
-  // Обратная связь One-to-One
   @OneToOne(() => Ordinator, ordinator => ordinator.university)
   ordinator: Ordinator;
 }

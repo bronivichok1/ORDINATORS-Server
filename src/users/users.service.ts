@@ -11,6 +11,10 @@ export class UsersService {
     private workersRepository: Repository<Worker>,
   ) {}
 
+  async countAdmins(): Promise<number> {
+    return this.workersRepository.count({ where: { role: 'admin' } });
+  }
+
   async findOneByLogin(login: string): Promise<Worker | null> {
     return this.workersRepository.findOne({ where: { login } });
   }
@@ -48,9 +52,6 @@ export class UsersService {
     return null;
   }
 
-  // ДОБАВЛЯЕМ ЭТИ МЕТОДЫ:
-
-  // Получить всех пользователей (без паролей)
   async findAll(): Promise<any[]> {
     const workers = await this.workersRepository.find({
       select: ['id', 'fio', 'login', 'role'],
@@ -59,7 +60,6 @@ export class UsersService {
     return workers;
   }
 
-  // Обновить пользователя
   async update(id: number, updateData: any): Promise<Worker> {
     const worker = await this.workersRepository.findOne({ where: { id } });
     
@@ -67,12 +67,10 @@ export class UsersService {
       throw new NotFoundException('Пользователь не найден');
     }
 
-    // Если обновляется пароль - хешируем его
     if (updateData.password) {
       updateData.password = await bcrypt.hash(updateData.password, 10);
     }
 
-    // Обновляем только разрешенные поля
     if (updateData.fio) worker.fio = updateData.fio;
     if (updateData.login) worker.login = updateData.login;
     if (updateData.role) worker.role = updateData.role;
@@ -81,7 +79,6 @@ export class UsersService {
     return this.workersRepository.save(worker);
   }
 
-  // Удалить пользователя
   async remove(id: number): Promise<void> {
     const worker = await this.workersRepository.findOne({ where: { id } });
     
