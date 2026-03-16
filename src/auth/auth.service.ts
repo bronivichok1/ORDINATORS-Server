@@ -14,16 +14,13 @@ export class AuthService {
   ) {}
 
   async login(loginDto: LoginDto) {
-    // Проверяем, есть ли хоть один админ
     const adminCount = await this.usersService.countAdmins();
     
-    // Если нет админов - создаем из .env
     if (adminCount === 0) {
-      const adminLogin = this.configService.get<string>('ADMIN_LOGIN', 'admin');
-      const adminPassword = this.configService.get<string>('ADMIN_PASSWORD', 'admin123');
-      const adminFio = this.configService.get<string>('ADMIN_FIO', 'Администратор');
+      const adminLogin = this.configService.get<string>('ADMIN_LOGIN');
+      const adminPassword = this.configService.get<string>('ADMIN_PASSWORD');
+      const adminFio = this.configService.get<string>('ADMIN_FIO');
       
-      // Создаем админа
       await this.usersService.createWorker(
         adminFio,
         adminLogin,
@@ -34,7 +31,6 @@ export class AuthService {
       console.log(`Создан администратор: ${adminLogin}`);
     }
 
-    // Продолжаем обычную авторизацию
     const user = await this.usersService.validateUser(
       loginDto.login,
       loginDto.password,
