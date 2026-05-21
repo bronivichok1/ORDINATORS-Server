@@ -1,11 +1,12 @@
-// ordinators.entity.ts
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToOne, OneToMany, JoinColumn } from 'typeorm';
 import { University } from './university.entity';
 import { CurrentControl } from './current_control.entity';
 import { Money } from './money.entity';
 import { Session } from './session.entity';
 import { Vacation } from './vacation.entity';
 import { EducationInfo } from './education_info.entity';
+import { SocialLeave } from './social_leave.entity';
+import { Supervisor } from './supervisors.entity';
 
 @Entity('ordinators')
 export class Ordinator {
@@ -35,15 +36,6 @@ export class Ordinator {
 
   @Column({ name: 'dismissal_reason', nullable: true })
   dismissalReason: string;
-
-  @Column({ name: 'social_leave', nullable: true })
-  socialLeave: string;
-
-  @Column({ name: 'social_leave_start', type: 'date', nullable: true })
-  socialLeaveStart: Date;
-
-  @Column({ name: 'social_leave_end', type: 'date', nullable: true })
-  socialLeaveEnd: Date;
 
   @Column({ name: 'mobile_phone' })
   mobilePhone: string;
@@ -99,7 +91,6 @@ export class Ordinator {
   @Column({ name: 'distribution_info', nullable: true })
   distributionInfo: string;
 
-  // Связи
   @OneToOne(() => University, university => university.ordinator, {
     cascade: true,
     eager: true
@@ -141,4 +132,16 @@ export class Ordinator {
   })
   @JoinColumn({ name: 'education_info_id' })
   educationInfo: EducationInfo;
+
+  @OneToMany(() => SocialLeave, socialLeave => socialLeave.ordinator, {
+    cascade: true,
+    eager: true
+  })
+  socialLeaves: SocialLeave[];
+
+  @OneToMany(() => Supervisor, supervisor => supervisor.ordinator, {
+    cascade: true,
+    eager: true
+  })
+  supervisors: Supervisor[];
 }

@@ -1,6 +1,43 @@
-// create-ordinator.dto.ts
-import { IsString, IsDate, IsOptional, IsNumber } from 'class-validator';
+import { IsString, IsDate, IsOptional, IsNumber, IsArray, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
+
+export class SocialLeaveDto {
+  @IsOptional()
+  id?: number;
+
+  @Type(() => Date)
+  @IsDate()
+  @IsOptional()
+  startDate?: Date;
+
+  @Type(() => Date)
+  @IsDate()
+  @IsOptional()
+  endDate?: Date;
+
+  @IsString()
+  @IsOptional()
+  reason?: string;
+}
+
+export class SupervisorDto {
+  @IsOptional()
+  id?: number;
+
+  @IsString()
+  @IsOptional()
+  supervisorName?: string;
+
+  @Type(() => Date)
+  @IsDate()
+  @IsOptional()
+  startDate?: Date;
+
+  @Type(() => Date)
+  @IsDate()
+  @IsOptional()
+  endDate?: Date;
+}
 
 export class CreateOrdinatorDto {
   @IsString()
@@ -37,20 +74,6 @@ export class CreateOrdinatorDto {
   @IsString()
   @IsOptional()
   dismissalReason?: string;
-
-  @IsString()
-  @IsOptional()
-  socialLeave?: string;
-
-  @Type(() => Date)
-  @IsDate()
-  @IsOptional()
-  socialLeaveStart?: Date;
-
-  @Type(() => Date)
-  @IsDate()
-  @IsOptional()
-  socialLeaveEnd?: Date;
 
   @IsString()
   @IsOptional()
@@ -113,11 +136,7 @@ export class CreateOrdinatorDto {
 
   @IsString()
   @IsOptional()
-  password?: string; 
-
-  @IsNumber()
-  @IsOptional()
-  supervisorId?: number;
+  password?: string;
 
   @IsString()
   @IsOptional()
@@ -179,4 +198,16 @@ export class CreateOrdinatorDto {
   @IsDate()
   @IsOptional()
   sessionEnd?: Date;
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => SocialLeaveDto)
+  @IsOptional()
+  socialLeaves?: SocialLeaveDto[];
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => SupervisorDto)
+  @IsOptional()
+  supervisors?: SupervisorDto[];
 }
